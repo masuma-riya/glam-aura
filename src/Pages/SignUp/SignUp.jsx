@@ -1,24 +1,120 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../../Hooks/useAuth";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { IoEye, IoEyeOff } from "react-icons/io5";
 
 const SignUp = () => {
+  // Using context with AuthContext
+  const { createUser, signInWithGoogle, signInWithGithub, updateUserProfile } =
+    useAuth();
+
+  const [registerError, setRegisterError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // navigate after login
+  const navigate = useNavigate();
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+
+    const form = new FormData(e.currentTarget);
+    const name = form.get("name");
+    const email = form.get("email");
+    const password = form.get("password");
+    const confirmPassword = form.get("confirmPassword");
+    const photoURL = form.get("photoURL");
+    const termsChecked = form.get("terms");
+
+    setRegisterError("");
+
+    if (password.length < 6) {
+      setRegisterError(
+        "! Password should be at least 6 characters or longer !"
+      );
+      return;
+    } else if (!/(?=.*[a-z])(?=.*[A-Z]).+/.test(password)) {
+      setRegisterError(
+        "! Password needs at least One Upper and Lowercase letters !"
+      );
+      return;
+    } else if (password !== confirmPassword) {
+      setRegisterError("! Password and Confirm password did not matched !");
+      return;
+    } else if (!termsChecked) {
+      setRegisterError("! Please accept our Terms and Conditions !");
+      return;
+    }
+
+    // create a new user
+    createUser(email, password)
+      .then((result) => {
+        console.log("User created successfully:", result.user);
+        updateUserProfile(name, photoURL).then(() => {
+          e.target.reset();
+          navigate("/");
+        });
+      })
+
+      .catch((error) => {
+        console.error(error);
+        if (error.code === "auth/email-already-in-use") {
+          setRegisterError(
+            "The Email is already Used! Please provide a new Email!"
+          );
+        } else {
+          setRegisterError(error.message);
+        }
+      });
+  };
+
+  // Google Registration event handler
+  const handleGoogleLogin = () => {
+    signInWithGoogle()
+      .then((result) => {
+        console.log(result.user);
+        toast.success("Google Registration Success!");
+        // Go to home page after google Registration
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  // Github Registration event handler
+  const handleGithubLogin = () => {
+    signInWithGithub()
+      .then((result) => {
+        console.log(result.user);
+        toast.success("Github Registration Success!");
+        // Go to home page after github Registration
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
           Create an Account
         </h2>
-        <p className="mt-2 text-center text-[17px] text-gray-600 max-w">
-          <h1 className="font-medium text-blue-600">
+        <h1 className="mt-2 text-center text-[17px] text-gray-600 max-w">
+          <p className="font-medium text-blue-600">
             Already have?{" "}
             <Link to="/login">
               <span className="italic hover:text-blue-400">Login Now</span>
             </Link>
-          </h1>
-        </p>
+          </p>
+        </h1>
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6">
+          <form onSubmit={handleRegister} className="space-y-6">
             <div>
               <label
                 htmlFor="name"
@@ -55,21 +151,50 @@ const SignUp = () => {
             </div>
             <div>
               <label
+                htmlFor="photoURL"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Your Photo URL
+              </label>
+              <div className="mt-1">
+                <input
+                  name="photoURL"
+                  type="text"
+                  className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  placeholder="Enter your Photo URL"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-700"
               >
                 Password
               </label>
-              <div className="mt-1">
+              <div className="relative mt-1">
                 <input
+                  className="rounded-md  w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  type={showPassword ? "text" : "password"}
                   name="password"
-                  type="password"
+                  placeholder="Password"
                   required
-                  className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="Enter your password"
                 />
+
+                <span
+                  className="absolute top-2 md:right-10 right-4"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <IoEye className="text-xl"></IoEye>
+                  ) : (
+                    <IoEyeOff className="text-xl"></IoEyeOff>
+                  )}
+                </span>
               </div>
             </div>
+
             <div>
               <label
                 htmlFor="confirmPassword"
@@ -77,16 +202,48 @@ const SignUp = () => {
               >
                 Confirm Password
               </label>
-              <div className="mt-1">
+              <div className="relative mt-1">
                 <input
+                  className="rounded-md  w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  type={showConfirmPassword ? "text" : "password"}
                   name="confirmPassword"
-                  type="password"
+                  placeholder="Enter Confirm Password"
                   required
-                  className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="Enter Confirm password"
                 />
+
+                <span
+                  className="absolute top-2 md:right-10 right-4"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? (
+                    <IoEye className="text-xl"></IoEye>
+                  ) : (
+                    <IoEyeOff className="text-xl"></IoEyeOff>
+                  )}
+                </span>
               </div>
             </div>
+            <div className="flex items-center">
+              <input
+                id="terms"
+                name="terms"
+                type="checkbox"
+                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 dark:text-white dark:border-gray-600 dark:focus:ring-indigo-400 disabled:cursor-wait disabled:opacity-50"
+              />
+              <label
+                htmlFor="terms"
+                className="ml-2 block text-lg italic text-blue-500 font-semibold"
+              >
+                Please accept our terms & conditions
+              </label>
+            </div>
+            {registerError && (
+              <i>
+                <p className="lg:text-base text-lg pt-4 pb-1 font-bold text-center text-red-600">
+                  {registerError}
+                </p>
+              </i>
+            )}
             <div>
               <button
                 type="submit"
@@ -108,7 +265,10 @@ const SignUp = () => {
               </div>
             </div>
             <div className="mt-8 flex gap-3 items-center">
-              <button className="group w-6/12 m-auto h-12 border border-gray-300 rounded-lg transition duration-300 hover:border-blue-400 focus:bg-blue-50 active:bg-blue-100">
+              <button
+                onClick={handleGoogleLogin}
+                className="group w-6/12 m-auto h-12 border border-gray-300 rounded-lg transition duration-300 hover:border-blue-400 focus:bg-blue-50 active:bg-blue-100"
+              >
                 <div className="flex items-center justify-center">
                   <img
                     src="https://www.svgrepo.com/show/475656/google-color.svg"
@@ -117,7 +277,10 @@ const SignUp = () => {
                   />
                 </div>
               </button>
-              <button className="group w-6/12 m-auto  h-12 border border-gray-300 rounded-lg transition duration-300 hover:border-blue-400">
+              <button
+                onClick={handleGithubLogin}
+                className="group w-6/12 m-auto  h-12 border border-gray-300 rounded-lg transition duration-300 hover:border-blue-400"
+              >
                 <div className="relative w-7 m-auto flex items-center space-x-4 justify-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
