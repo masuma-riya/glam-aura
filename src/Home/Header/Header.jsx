@@ -23,26 +23,24 @@ const Header = () => {
   return (
     <header className="shadow-md font-[sans-serif] tracking-wide relative z-50">
       <section className="md:flex lg:items-center relative py-3 lg:px-10 px-4 border-gray-200 border-b bg-white lg:min-h-[80px] max-lg:min-h-[60px]">
-        <a href="" className="max-sm:w-full max-sm:mb-3 shrink-0">
-          <img
-            src="https://readymadeui.com/readymadeui.svg"
-            alt="logo"
-            className="w-[160px]"
-          />
-        </a>
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShWBDlVEyg_cjsDHxvC5Jqv217jE0wAhCzAJxnJTLPc72bDnMbemc0RlD7-Nkwk3BRjms&usqp=CAU"
+          alt="logo"
+          className="w-[80px]"
+        />
 
         <div className="flex flex-wrap w-full items-center">
           <input
             type="text"
             placeholder="Search something..."
-            className="xl:w-96 max-lg:w-full lg:ml-10 max-md:mt-4 max-lg:ml-4 bg-gray-200 focus:bg-transparent px-6 rounded h-11 outline-[#333] text-sm transition-all"
+            className="xl:w-96 max-lg:w-full lg:ml-10 max-md:mt-4 max-lg:ml-4 bg-gray-100 focus:bg-transparent px-6 rounded h-11 outline-[#333] text-sm transition-all"
           />
           <div className="ml-auto max-lg:mt-4">
             <ul className="flex items-center">
               {/* Additional menu items can be added here */}{" "}
-              <Link to="/update-user">
+              <Link to="/products">
                 {" "}
-                <li className="max-sm:hidden flex text-[15px] max-lg:py-2 px-3 font-medium text-[#333] cursor-pointer">
+                <li className="max-sm:hidden flex text-[15px] max-lg:py-2 px-3 font-extrabold text-red-700 cursor-pointer">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="20px"
@@ -68,7 +66,7 @@ const Header = () => {
                   Stores and Services
                 </li>
               </Link>
-              <li className="max-lg:py-2 px-3 cursor-pointer">
+              <li className="max-lg:py-2 px-3 mr-5  cursor-pointer">
                 <span className="relative">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -87,6 +85,7 @@ const Header = () => {
                   </span>
                 </span>
               </li>
+              <img className="rounded-full w-10" src={user?.photoURL} alt="" />
               {user ? (
                 <>
                   {" "}
@@ -104,11 +103,18 @@ const Header = () => {
                 </>
               ) : (
                 <>
-                  {" "}
-                  <li className="flex text-[15px] max-lg:py-2 px-3 hover:text-[#007bff] hover:fill-[#007bff]">
+                  <li className="flex  hover:text-[#007bff] hover:fill-[#007bff]">
+                    <Link to="/login">
+                      {" "}
+                      <button className="px-5 py-2 text-base rounded font-semibold text-[#333] border-2 border-[#333] bg-transparent">
+                        Login
+                      </button>
+                    </Link>
+                  </li>
+                  <li className="flex px-3 hover:text-[#007bff] hover:fill-[#007bff]">
                     <Link to="/sign-up">
                       {" "}
-                      <button className="px-4 py-2 text-sm rounded font-semibold text-[#333] border-2 border-[#333] bg-transparent">
+                      <button className="px-4 py-2 text-base rounded font-semibold text-[#333] border-2 border-[#333] bg-transparent">
                         Sign Up
                       </button>
                     </Link>
@@ -196,7 +202,7 @@ const Header = () => {
               href=""
               className="hover:text-yellow-300 text-white text-[15px] font-medium block"
             >
-              Men
+              Makeup
             </a>
           </li>
           <li className="max-lg:border-b max-lg:py-3 px-3">
@@ -204,7 +210,7 @@ const Header = () => {
               href=""
               className="hover:text-yellow-300 text-white text-[15px] font-medium block"
             >
-              Women
+              Skincare
             </a>
           </li>
           <li className="max-lg:border-b max-lg:py-3 px-3">
