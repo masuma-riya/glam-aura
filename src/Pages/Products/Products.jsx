@@ -6,8 +6,6 @@ import { useState } from "react";
 
 const Products = () => {
   const [selectedBrand, setSelectedBrand] = useState("");
-  const [search, setSearch] = useState("");
-  const [submitSearch, setSubmitSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedPriceRange, setSelectedPriceRange] = useState("");
   const [sortBy, setSortBy] = useState("");
@@ -26,7 +24,6 @@ const Products = () => {
       selectedCategory,
       sortBy,
       selectedPriceRange,
-      submitSearch,
     ],
     queryFn: async () => {
       const [priceMin, priceMax] = selectedPriceRange.split("-");
@@ -37,22 +34,11 @@ const Products = () => {
           sortBy,
           priceMin,
           priceMax,
-          search: submitSearch,
         },
       });
     },
-    enabled: submitSearch !== "",
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitSearch(search); // Set submitSearch to trigger data fetching
-  };
-
-  const handleSearchReset = () => {
-    setSearch("");
-    setSubmitSearch(""); // Clear the search and reset submitSearch
-  };
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
@@ -77,29 +63,6 @@ const Products = () => {
   return (
     <>
       <div>
-        <form onSubmit={handleSubmit} className="mb-4">
-          {/* Search Input */}
-          <input
-            type="text"
-            placeholder="Search by product name..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)} // Update search state on change
-            className="p-2 border border-gray-300 rounded"
-          />
-          <button
-            type="submit"
-            className="ml-2 p-2 bg-blue-500 text-white rounded"
-          >
-            Search
-          </button>
-          <button
-            type="button"
-            onClick={handleSearchReset}
-            className="ml-2 p-2 bg-gray-500 text-white rounded"
-          >
-            Reset Search
-          </button>
-        </form>
         {/* Brand Filter */}
         <select
           value={selectedBrand}
@@ -246,6 +209,7 @@ const Products = () => {
           </div>
         ))}
       </div>
+
       {/* Pagination Controls */}
       <div className="flex justify-center mt-4">
         <button
