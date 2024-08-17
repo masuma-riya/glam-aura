@@ -106,8 +106,6 @@ const Products = () => {
         </select>
         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
           <option value="">Sort By Date</option>
-
-          <option value="newestFirst">Date Added: Newest First</option>
         </select>
       </div>
 
