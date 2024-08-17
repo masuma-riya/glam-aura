@@ -30,11 +30,11 @@ const Header = () => {
         />
 
         <div className="flex flex-wrap w-full items-center">
-          <input
+          {/* <input
             type="text"
             placeholder="Search something..."
             className="xl:w-96 max-lg:w-full lg:ml-10 max-md:mt-4 max-lg:ml-4 bg-gray-100 focus:bg-transparent px-6 rounded h-11 outline-[#333] text-sm transition-all"
-          />
+          /> */}
           <div className="ml-auto max-lg:mt-4">
             <ul className="flex items-center">
               {/* Additional menu items can be added here */}{" "}
@@ -191,34 +191,19 @@ const Header = () => {
 
           <li className="max-lg:border-b max-lg:py-3 px-3">
             <a
-              href=""
+              href="/"
               className="hover:text-yellow-300 text-yellow-300 text-[15px] font-medium block"
             >
-              New
+              Home
             </a>
           </li>
+
           <li className="max-lg:border-b max-lg:py-3 px-3">
             <a
-              href=""
+              href="/products"
               className="hover:text-yellow-300 text-white text-[15px] font-medium block"
             >
-              Makeup
-            </a>
-          </li>
-          <li className="max-lg:border-b max-lg:py-3 px-3">
-            <a
-              href=""
-              className="hover:text-yellow-300 text-white text-[15px] font-medium block"
-            >
-              Skincare
-            </a>
-          </li>
-          <li className="max-lg:border-b max-lg:py-3 px-3">
-            <a
-              href=""
-              className="hover:text-yellow-300 text-white text-[15px] font-medium block"
-            >
-              Brands
+              Products
             </a>
           </li>
         </ul>

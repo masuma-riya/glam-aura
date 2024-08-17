@@ -9,6 +9,7 @@ const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedPriceRange, setSelectedPriceRange] = useState("");
   const [sortBy, setSortBy] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(3);
   const axiosSecure = useAxios();
@@ -24,6 +25,7 @@ const Products = () => {
       selectedCategory,
       sortBy,
       selectedPriceRange,
+      searchTerm,
     ],
     queryFn: async () => {
       const [priceMin, priceMax] = selectedPriceRange.split("-");
@@ -34,10 +36,15 @@ const Products = () => {
           sortBy,
           priceMin,
           priceMax,
+          search: searchTerm,
         },
       });
     },
   });
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -63,6 +70,14 @@ const Products = () => {
   return (
     <>
       <div>
+        <form>
+          <input
+            type="text"
+            placeholder="Search by product name..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+        </form>
         {/* Brand Filter */}
         <select
           value={selectedBrand}
