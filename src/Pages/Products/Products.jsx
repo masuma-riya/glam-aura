@@ -6,9 +6,13 @@ import { useState } from "react";
 
 const Products = () => {
   const [selectedBrand, setSelectedBrand] = useState("");
+  const [search, setSearch] = useState("");
+  const [submitSearch, setSubmitSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
-
+  const [selectedPriceRange, setSelectedPriceRange] = useState("");
   const [sortBy, setSortBy] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage] = useState(3);
   const axiosSecure = useAxios();
   // const { data, isLoading } = useQuery({
   //   queryKey: ["allPro"],
@@ -16,17 +20,42 @@ const Products = () => {
   // });
 
   const { data, isLoading } = useQuery({
-    queryKey: ["allPro", selectedBrand, selectedCategory, sortBy],
-    queryFn: async () =>
-      await axiosSecure.get(`/allProducts`, {
+    queryKey: [
+      "allPro",
+      selectedBrand,
+      selectedCategory,
+      sortBy,
+      selectedPriceRange,
+      submitSearch,
+    ],
+    queryFn: async () => {
+      const [priceMin, priceMax] = selectedPriceRange.split("-");
+      return await axiosSecure.get(`/allProducts`, {
         params: {
           brand: selectedBrand,
           category: selectedCategory,
-
           sortBy,
+          priceMin,
+          priceMax,
+          search: submitSearch,
         },
-      }),
+      });
+    },
+    enabled: submitSearch !== "",
   });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitSearch(search); // Set submitSearch to trigger data fetching
+  };
+
+  const handleSearchReset = () => {
+    setSearch("");
+    setSubmitSearch(""); // Clear the search and reset submitSearch
+  };
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
 
   if (isLoading) {
     return (
@@ -36,11 +65,41 @@ const Products = () => {
     );
   }
 
-  const allProducts = data?.data;
+  const allProducts = data?.data || [];
+  const totalProducts = allProducts.length;
+  const totalPages = Math.ceil(totalProducts / productsPerPage);
+  const startIndex = (currentPage - 1) * productsPerPage;
+  const paginatedProducts = allProducts.slice(
+    startIndex,
+    startIndex + productsPerPage
+  );
 
   return (
     <>
       <div>
+        <form onSubmit={handleSubmit} className="mb-4">
+          {/* Search Input */}
+          <input
+            type="text"
+            placeholder="Search by product name..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)} // Update search state on change
+            className="p-2 border border-gray-300 rounded"
+          />
+          <button
+            type="submit"
+            className="ml-2 p-2 bg-blue-500 text-white rounded"
+          >
+            Search
+          </button>
+          <button
+            type="button"
+            onClick={handleSearchReset}
+            className="ml-2 p-2 bg-gray-500 text-white rounded"
+          >
+            Reset Search
+          </button>
+        </form>
         {/* Brand Filter */}
         <select
           value={selectedBrand}
@@ -63,18 +122,34 @@ const Products = () => {
           <option value="Makeup">Makeup</option>
           {/* Add other categories */}
         </select>
+        {/* Price Range Filter */}
+        <select
+          value={selectedPriceRange}
+          onChange={(e) => setSelectedPriceRange(e.target.value)}
+        >
+          <option value="">All Prices</option>
+          <option value="0-20">$0 - $20</option>
+          <option value="21-30">$21 - $30</option>
+          <option value="31-40">$31 - $40</option>
+          <option value="41-50">$41 - $50</option>
+          {/* Add other ranges */}
+        </select>
 
         {/* Sort Options */}
         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-          <option value="">Sort By</option>
+          <option value="">Sort By Price</option>
           <option value="priceLowToHigh">Price: Low to High</option>
           <option value="priceHighToLow">Price: High to Low</option>
+        </select>
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+          <option value="">Sort By Date</option>
+
           <option value="newestFirst">Date Added: Newest First</option>
         </select>
       </div>
 
       <div className="mt-20 grid md:grid-cols-3 w-10/12 gap-12 md:w-11/12 lg:w-9/12 h-auto m-auto">
-        {allProducts?.map((product) => (
+        {paginatedProducts?.map((product) => (
           <div
             key={product._id}
             className="bg-white rounded-lg overflow-hidden shadow-lg ring-4 ring-red-500 ring-opacity-40 max-w-sm"
@@ -170,6 +245,26 @@ const Products = () => {
             </div>
           </div>
         ))}
+      </div>
+      {/* Pagination Controls */}
+      <div className="flex justify-center mt-4">
+        <button
+          disabled={currentPage === 1}
+          onClick={() => handlePageChange(currentPage - 1)}
+          className="px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Previous
+        </button>
+        <span className="mx-4">
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          disabled={currentPage === totalPages}
+          onClick={() => handlePageChange(currentPage + 1)}
+          className="px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Next
+        </button>
       </div>
     </>
   );
