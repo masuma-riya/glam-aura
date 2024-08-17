@@ -12,7 +12,7 @@ const Login = () => {
 
   // Location
   const location = useLocation();
-  console.log(location);
+  // console.log(location);
 
   // navigate after login
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ const Login = () => {
     // Login exciting User
     signInUser(email, password)
       .then((result) => {
-        console.log(result.user);
+        // console.log(result.user);
         toast.success("User logged in Successfully!");
         // Reset form field after login
         e.target.reset();
@@ -49,7 +49,7 @@ const Login = () => {
   const handleGoogleLogin = () => {
     signInWithGoogle()
       .then((result) => {
-        console.log(result.user);
+        // console.log(result.user);
         toast.success("Google Login Successful!");
         // After Google login go to clicked state otherwish go to home page
         navigate(location?.state ? location.state : "/");
@@ -63,7 +63,7 @@ const Login = () => {
   const handleGithubLogin = () => {
     signInWithGithub()
       .then((result) => {
-        console.log(result.user);
+        // console.log(result.user);
         toast.success("Github Login Successful!");
         //  Go to Home page after github Login
         navigate(location?.state ? location.state : "/");

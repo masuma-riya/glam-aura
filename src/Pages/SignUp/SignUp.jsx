@@ -50,7 +50,7 @@ const SignUp = () => {
     // create a new user
     createUser(email, password)
       .then((result) => {
-        console.log("User created successfully:", result.user);
+        // console.log("User created successfully:", result.user);
         updateUserProfile(name, photoURL).then(() => {
           e.target.reset();
           navigate("/");
@@ -73,7 +73,7 @@ const SignUp = () => {
   const handleGoogleLogin = () => {
     signInWithGoogle()
       .then((result) => {
-        console.log(result.user);
+        // console.log(result.user);
         toast.success("Google Registration Success!");
         // Go to home page after google Registration
         navigate("/");
@@ -87,7 +87,7 @@ const SignUp = () => {
   const handleGithubLogin = () => {
     signInWithGithub()
       .then((result) => {
-        console.log(result.user);
+        // console.log(result.user);
         toast.success("Github Registration Success!");
         // Go to home page after github Registration
         navigate("/");
