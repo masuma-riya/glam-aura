@@ -70,7 +70,7 @@ const Products = () => {
   return (
     <>
       <div>
-        <div className="mt-10 flex w-11/12 mx-auto flex-col md:flex-row justify-between items-center p-4 bg-gray-100 rounded-lg shadow-md">
+        <div className="mt-7 flex w-11/12 mx-auto flex-col md:flex-row justify-between items-center p-4 bg-gray-100 rounded-lg shadow-md">
           <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
             {/* Brand Filter */}
             <select
@@ -79,9 +79,12 @@ const Products = () => {
               onChange={(e) => setSelectedBrand(e.target.value)}
             >
               <option value="">All Brands</option>
-              <option value="Avene">Avene</option>
+              <option value="Elegant">Elegant</option>
+              <option value="U Beauty">U Beauty</option>
+              <option value="MAC">MAC</option>
               <option value="Dior">Dior</option>
-              <option value="Chanel">Chanel</option>
+              <option value="Huda Beauty">Huda Beauty</option>
+              <option value="Simple">Simple</option>
             </select>
 
             {/* Category Filter */}
