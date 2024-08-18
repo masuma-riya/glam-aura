@@ -24,20 +24,14 @@ const Header = () => {
     <header className="shadow-md font-[sans-serif] tracking-wide relative z-50">
       <section className="md:flex lg:items-center relative py-3 lg:px-10 px-4 border-gray-200 border-b bg-white lg:min-h-[80px] max-lg:min-h-[60px]">
         <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShWBDlVEyg_cjsDHxvC5Jqv217jE0wAhCzAJxnJTLPc72bDnMbemc0RlD7-Nkwk3BRjms&usqp=CAU"
+          src="https://i.ibb.co/JjhF94m/logo-nav-removebg-preview.png"
           alt="logo"
           className="w-[80px]"
         />
 
         <div className="flex flex-wrap w-full items-center">
-          {/* <input
-            type="text"
-            placeholder="Search something..."
-            className="xl:w-96 max-lg:w-full lg:ml-10 max-md:mt-4 max-lg:ml-4 bg-gray-100 focus:bg-transparent px-6 rounded h-11 outline-[#333] text-sm transition-all"
-          /> */}
           <div className="ml-auto max-lg:mt-4">
             <ul className="flex items-center">
-              {/* Additional menu items can be added here */}{" "}
               <Link to="/products">
                 {" "}
                 <li className="max-sm:hidden flex text-[15px] max-lg:py-2 px-3 font-extrabold text-red-700 cursor-pointer">
@@ -66,7 +60,7 @@ const Header = () => {
                   Stores and Services
                 </li>
               </Link>
-              <li className="max-lg:py-2 px-3 mr-5  cursor-pointer">
+              <li className="max-lg:py-2 px-3 md:mr-5 cursor-pointer">
                 <span className="relative">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -106,7 +100,7 @@ const Header = () => {
                   <li className="flex  hover:text-[#007bff] hover:fill-[#007bff]">
                     <Link to="/login">
                       {" "}
-                      <button className="px-5 py-2 text-base rounded font-semibold text-[#333] border-2 border-[#333] bg-transparent">
+                      <button className="px-2 py-2 text-base rounded font-semibold text-[#333] border-2 border-[#333] bg-transparent">
                         Login
                       </button>
                     </Link>
@@ -114,7 +108,7 @@ const Header = () => {
                   <li className="flex px-3 hover:text-[#007bff] hover:fill-[#007bff]">
                     <Link to="/sign-up">
                       {" "}
-                      <button className="px-4 py-2 text-base rounded font-semibold text-[#333] border-2 border-[#333] bg-transparent">
+                      <button className="px-2 py-2 text-base rounded font-semibold text-[#333] border-2 border-[#333] bg-transparent">
                         Sign Up
                       </button>
                     </Link>
@@ -144,8 +138,6 @@ const Header = () => {
 
       <div>
         <button
-          id="collapseMenu"
-          // className={`max-lg:${isMenuOpen ? "block" : "hidden"} lg:block`}
           className={`max-lg:${
             isMenuOpen
               ? "block before:fixed before:bg-black before:opacity-50 before:inset-0 before:z-50"
@@ -181,13 +173,13 @@ const Header = () => {
           }`}
         >
           {/* Your list items here */}
-          <li className="mb-6 hidden max-lg:block">
+          {/* <li className="mb-6 hidden max-lg:block">
             <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShWBDlVEyg_cjsDHxvC5Jqv217jE0wAhCzAJxnJTLPc72bDnMbemc0RlD7-Nkwk3BRjms&usqp=CAU"
+              src="https://i.ibb.co/JjhF94m/logo-nav-removebg-preview.png"
               alt="logo"
               className="w-36"
             />
-          </li>
+          </li> */}
 
           <li className="max-lg:border-b max-lg:py-3 px-3">
             <a

@@ -41,7 +41,9 @@ const Products = () => {
   });
 
   const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
   };
 
   if (isLoading) {
@@ -68,99 +70,110 @@ const Products = () => {
   return (
     <>
       <div>
-        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="relative isolate overflow-hidden bg-white px-6 py-8 text-center sm:px-16 sm:shadow-sm">
-            <form>
-              <label
-                className="mx-auto mt-8 relative bg-white min-w-sm max-w-2xl flex flex-col md:flex-row items-center justify-center border py-2 px-2 rounded-2xl gap-2 shadow-2xl focus-within:border-gray-300"
-                htmlFor="search"
-              >
-                <input
-                  id="search"
-                  placeholder="Search a product"
-                  name="search"
-                  className="px-6  py-2 w-full text-xl rounded-md flex-1 outline-none bg-white"
-                  value={search}
-                  style={{
-                    fontStyle: "italic",
-                  }}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-              </label>
-            </form>
-
-            <svg
-              viewBox="0 0 1024 1024"
-              className="absolute left-1/2 top-1/2 -z-10 h-[64rem] w-[64rem] -translate-x-1/2 [mask-image:radial-gradient(closest-side,white,transparent)]"
-              aria-hidden="true"
+        <div className="mt-10 flex w-11/12 mx-auto flex-col md:flex-row justify-between items-center p-4 bg-gray-100 rounded-lg shadow-md">
+          <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
+            {/* Brand Filter */}
+            <select
+              className="p-2 text-base border border-gray-300 rounded-md bg-white hover:border-blue-500 focus:outline-none focus:ring-blue-500"
+              value={selectedBrand}
+              onChange={(e) => setSelectedBrand(e.target.value)}
             >
-              <circle
-                cx={512}
-                cy={512}
-                r={512}
-                fill="url(#827591b1-ce8c-4110-b064-7cb85a0b1217)"
-                fillOpacity="0.7"
-              ></circle>
-              <defs>
-                <radialGradient id="827591b1-ce8c-4110-b064-7cb85a0b1217">
-                  <stop stopColor="#3b82f6" />
-                  <stop offset={1} stopColor="#1d4ed8" />
-                </radialGradient>
-              </defs>
-            </svg>
+              <option value="">All Brands</option>
+              <option value="Avene">Avene</option>
+              <option value="Dior">Dior</option>
+              <option value="Chanel">Chanel</option>
+            </select>
+
+            {/* Category Filter */}
+            <select
+              className="p-2 text-base border border-gray-300 rounded-md bg-white hover:border-blue-500 focus:outline-none focus:ring-blue-500"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              <option value="">All Categories</option>
+              <option value="Skin Care">Skin Care</option>
+              <option value="Makeup">Makeup</option>
+            </select>
+
+            {/* Price Range Filter */}
+            <select
+              className="p-2 text-base border border-gray-300 rounded-md bg-white hover:border-blue-500 focus:outline-none focus:ring-blue-500"
+              value={selectedPriceRange}
+              onChange={(e) => setSelectedPriceRange(e.target.value)}
+            >
+              <option value="">All Price Ranges</option>
+              <option value="0-20">$0 - $20</option>
+              <option value="21-30">$21 - $30</option>
+              <option value="31-40">$31 - $40</option>
+              <option value="41-50">$41 - $50</option>
+            </select>
+          </div>
+
+          <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto mt-4 md:mt-0">
+            {/* Sort Options */}
+            <select
+              className="p-2 text-base border border-gray-300 rounded-md bg-white hover:border-blue-500 focus:outline-none focus:ring-blue-500"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+            >
+              <option value="">Sort By Date</option>
+              <option value="newestFirst">Newest First</option>
+            </select>
+            <select
+              className="p-2 text-base border border-gray-300 rounded-md bg-white hover:border-blue-500 focus:outline-none focus:ring-blue-500"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+            >
+              <option value="">Sort By Price</option>
+              <option value="priceLowToHigh">Low to High</option>
+              <option value="priceHighToLow">High to Low</option>
+            </select>
           </div>
         </div>
+        {/* search */}
+        <div className="mt-6 mx-auto max-w-2xl sm:px-6 lg:px-8">
+          <form>
+            <label
+              className="mx-auto relative bg-white min-w-sm max-w-2xl flex flex-col md:flex-row items-center justify-center border py-2 px-2 rounded-2xl gap-2 shadow-2xl focus-within:border-gray-200"
+              htmlFor="search"
+            >
+              <input
+                id="search"
+                placeholder="Search a product"
+                name="search"
+                className="px-3 py-[2px] w-full text-xl rounded-md flex-1 outline-none bg-white"
+                value={search}
+                style={{
+                  fontStyle: "italic",
+                }}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </label>
+          </form>
 
-        {/* Brand Filter */}
-        <select
-          value={selectedBrand}
-          onChange={(e) => setSelectedBrand(e.target.value)}
-        >
-          <option value="">All Brands</option>
-          <option value="Avene">Avene</option>
-          <option value="Dior">Dior</option>
-          <option value="Chanel">Chanel</option>
-          {/* Add other brands */}
-        </select>
-
-        {/* Category Filter */}
-        <select
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-        >
-          <option value="">All Categories</option>
-          <option value="Skin Care">Skin Care</option>
-          <option value="Makeup">Makeup</option>
-          {/* Add other categories */}
-        </select>
-        {/* Price Range Filter */}
-        <select
-          value={selectedPriceRange}
-          onChange={(e) => setSelectedPriceRange(e.target.value)}
-        >
-          <option value="">All Price Ranges</option>
-          <option value="0-20">$0 - $20</option>
-          <option value="21-30">$21 - $30</option>
-          <option value="31-40">$31 - $40</option>
-          <option value="41-50">$41 - $50</option>
-          {/* Add other ranges */}
-        </select>
-
-        {/* Sort Options */}
-
-        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-          <option value="">Sort By Date</option>
-
-          <option value="newestFirst">Date Added: Newest First</option>
-        </select>
-        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-          <option value="">Sort By Price</option>
-          <option value="priceLowToHigh">Price: Low to High</option>
-          <option value="priceHighToLow">Price: High to Low</option>
-        </select>
+          {/* <svg
+            viewBox="0 0 1024 1024"
+            className="absolute left-1/2 top-1/2 -z-10 h-[64rem] w-[64rem] -translate-x-1/2 [mask-image:radial-gradient(closest-side,white,transparent)]"
+            aria-hidden="true"
+          >
+            <circle
+              cx={512}
+              cy={512}
+              r={512}
+              fill="url(#827591b1-ce8c-4110-b064-7cb85a0b1217)"
+              fillOpacity="0.7"
+            ></circle>
+            <defs>
+              <radialGradient id="827591b1-ce8c-4110-b064-7cb85a0b1217">
+                <stop stopColor="#3b82f6" />
+                <stop offset={1} stopColor="#1d4ed8" />
+              </radialGradient>
+            </defs>
+          </svg> */}
+        </div>
       </div>
 
-      <div className="mt-20 grid md:grid-cols-3 w-10/12 gap-12 md:w-11/12 lg:w-9/12 h-auto m-auto">
+      <div className="mt-[70px] grid md:grid-cols-3 w-10/12 gap-12 md:w-11/12 lg:w-9/12 h-auto m-auto">
         {searchedFoods?.map((product) => (
           <div
             key={product._id}
@@ -259,24 +272,80 @@ const Products = () => {
         ))}
       </div>
 
-      {/* Pagination Controls */}
-      <div className="flex justify-center mt-4">
+      {/* Pagination */}
+      <div className="flex items-center justify-center mt-6 mb-6 space-x-3">
         <button
-          disabled={currentPage === 1}
           onClick={() => handlePageChange(currentPage - 1)}
-          className="px-4 py-2 bg-blue-500 text-white rounded"
+          disabled={currentPage === 1}
+          className={`flex items-center justify-center md:px-4 px-2 md:py-2 py-1 text-sm md:text-base font-medium rounded-lg transition duration-150 ease-in-out 
+            ${
+              currentPage === 1
+                ? "bg-gray-200 text-gray-500 cursor-not-allowed border-gray-400"
+                : "text-gray-800 bg-white border border-gray-300"
+            }`}
         >
+          <svg
+            className="w-4 h-4 mr-2 rtl:rotate-180"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 10"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M13 5H1m0 0 4 4M1 5l4-4"
+            />
+          </svg>
           Previous
         </button>
-        <span className="mx-4">
-          Page {currentPage} of {totalPages}
-        </span>
+
+        {/* Page Numbers */}
+        {[...Array(totalPages).keys()].map((page) => {
+          const pageNumber = page + 1;
+          return (
+            <button
+              key={pageNumber}
+              onClick={() => handlePageChange(pageNumber)}
+              className={`md:px-4 px-3 md:py-2 py-1 text-sm md:text-base font-medium border rounded-lg transition duration-150 ease-in-out ${
+                currentPage === pageNumber
+                  ? "bg-blue-300 text-black"
+                  : "bg-white text-gray-700 border-gray-300 hover:bg-gray-200 hover:text-gray-800"
+              }`}
+            >
+              {pageNumber}
+            </button>
+          );
+        })}
+
         <button
-          disabled={currentPage === totalPages}
           onClick={() => handlePageChange(currentPage + 1)}
-          className="px-4 py-2 bg-blue-500 text-white rounded"
+          disabled={currentPage === totalPages}
+          className={`flex items-center justify-center md:px-4 px-2 md:py-2 py-1 text-sm md:text-base font-medium rounded-lg transition duration-150 ease-in-out
+            ${
+              currentPage === totalPages
+                ? "bg-gray-200 text-gray-500 cursor-not-allowed border-gray-400"
+                : "text-gray-800 bg-white border border-gray-300"
+            }`}
         >
           Next
+          <svg
+            className="w-4 h-4 ml-2 rtl:rotate-180"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 10"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M1 5h12m0 0L9 1m4 4L9 9"
+            />
+          </svg>
         </button>
       </div>
     </>
