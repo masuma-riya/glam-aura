@@ -9,7 +9,7 @@ const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedPriceRange, setSelectedPriceRange] = useState("");
   const [sortBy, setSortBy] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(3);
   const axiosSecure = useAxios();
@@ -25,7 +25,6 @@ const Products = () => {
       selectedCategory,
       sortBy,
       selectedPriceRange,
-      searchTerm,
     ],
     queryFn: async () => {
       const [priceMin, priceMax] = selectedPriceRange.split("-");
@@ -36,15 +35,10 @@ const Products = () => {
           sortBy,
           priceMin,
           priceMax,
-          search: searchTerm,
         },
       });
     },
   });
-
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -67,17 +61,56 @@ const Products = () => {
     startIndex + productsPerPage
   );
 
+  const searchedFoods = paginatedProducts.filter((prod) =>
+    prod.productName.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <>
       <div>
-        <form>
-          <input
-            type="text"
-            placeholder="Search by product name..."
-            value={searchTerm}
-            onChange={handleSearchChange}
-          />
-        </form>
+        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="relative isolate overflow-hidden bg-white px-6 py-8 text-center sm:px-16 sm:shadow-sm">
+            <form>
+              <label
+                className="mx-auto mt-8 relative bg-white min-w-sm max-w-2xl flex flex-col md:flex-row items-center justify-center border py-2 px-2 rounded-2xl gap-2 shadow-2xl focus-within:border-gray-300"
+                htmlFor="search"
+              >
+                <input
+                  id="search"
+                  placeholder="Search a product"
+                  name="search"
+                  className="px-6  py-2 w-full text-xl rounded-md flex-1 outline-none bg-white"
+                  value={search}
+                  style={{
+                    fontStyle: "italic",
+                  }}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              </label>
+            </form>
+
+            <svg
+              viewBox="0 0 1024 1024"
+              className="absolute left-1/2 top-1/2 -z-10 h-[64rem] w-[64rem] -translate-x-1/2 [mask-image:radial-gradient(closest-side,white,transparent)]"
+              aria-hidden="true"
+            >
+              <circle
+                cx={512}
+                cy={512}
+                r={512}
+                fill="url(#827591b1-ce8c-4110-b064-7cb85a0b1217)"
+                fillOpacity="0.7"
+              ></circle>
+              <defs>
+                <radialGradient id="827591b1-ce8c-4110-b064-7cb85a0b1217">
+                  <stop stopColor="#3b82f6" />
+                  <stop offset={1} stopColor="#1d4ed8" />
+                </radialGradient>
+              </defs>
+            </svg>
+          </div>
+        </div>
+
         {/* Brand Filter */}
         <select
           value={selectedBrand}
@@ -105,7 +138,7 @@ const Products = () => {
           value={selectedPriceRange}
           onChange={(e) => setSelectedPriceRange(e.target.value)}
         >
-          <option value="">All Prices</option>
+          <option value="">All Price Ranges</option>
           <option value="0-20">$0 - $20</option>
           <option value="21-30">$21 - $30</option>
           <option value="31-40">$31 - $40</option>
@@ -114,20 +147,21 @@ const Products = () => {
         </select>
 
         {/* Sort Options */}
-        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-          <option value="">Sort By Price</option>
-          <option value="priceLowToHigh">Price: Low to High</option>
-          <option value="priceHighToLow">Price: High to Low</option>
-        </select>
+
         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
           <option value="">Sort By Date</option>
 
           <option value="newestFirst">Date Added: Newest First</option>
         </select>
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+          <option value="">Sort By Price</option>
+          <option value="priceLowToHigh">Price: Low to High</option>
+          <option value="priceHighToLow">Price: High to Low</option>
+        </select>
       </div>
 
       <div className="mt-20 grid md:grid-cols-3 w-10/12 gap-12 md:w-11/12 lg:w-9/12 h-auto m-auto">
-        {paginatedProducts?.map((product) => (
+        {searchedFoods?.map((product) => (
           <div
             key={product._id}
             className="bg-white rounded-lg overflow-hidden shadow-lg ring-4 ring-red-500 ring-opacity-40 max-w-sm"

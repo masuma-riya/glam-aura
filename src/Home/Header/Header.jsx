@@ -183,7 +183,7 @@ const Header = () => {
           {/* Your list items here */}
           <li className="mb-6 hidden max-lg:block">
             <img
-              src="https://readymadeui.com/readymadeui-white.svg"
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShWBDlVEyg_cjsDHxvC5Jqv217jE0wAhCzAJxnJTLPc72bDnMbemc0RlD7-Nkwk3BRjms&usqp=CAU"
               alt="logo"
               className="w-36"
             />
